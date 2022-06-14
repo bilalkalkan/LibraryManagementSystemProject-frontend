@@ -1,0 +1,129 @@
+<div class="container">
+  <div class="row">
+    <form>
+      <div class="col-md-4">
+        <label for="name">Kitap İsmi</label>
+        <input
+          type="text"
+          #name="ngModel"
+          name="name"
+          id="name"
+          autocomplete="off"
+          class="form-control"
+          required
+          minlength="4"
+          [(ngModel)]="book.name"
+        />
+      </div>
+      <div class="col-md-4">
+        <label for="authorName">Yazar İsmi</label>
+        <input
+          type="text"
+          name="authorName"
+          id="authorName"
+          autocomplete="off"
+          class="form-control"
+          [(ngModel)]="book.authorName"
+        />
+      </div>
+      <div class="col-md-4">
+        <label for="publisherName">Yayınevi</label>
+        <input
+          type="text"
+          name="publisherName"
+          id="publisherName"
+          autocomplete="off"
+          class="form-control"
+          [(ngModel)]="book.publisherName"
+        />
+      </div>
+      <div class="col-md-4">
+        <label for="dateOfIssue">Basım Yılı</label>
+        <input
+          type="text"
+          name="dateOfIssue"
+          id="dateOfIssue"
+          autocomplete="off"
+          class="form-control"
+          [(ngModel)]="book.dateOfIssue"
+        />
+      </div>
+      <label for="bookStatus">Kitap Emanette mi?</label>
+      <div class="form-check">
+        <input
+          class="form-check-input"
+          type="radio"
+          name="bookStatus"
+          id="bookStatus1"
+          [(ngModel)]="book.bookStatus"
+          [value]="false"
+        />
+        <label class="form-check-label" for="bookStatus1"> Evet </label>
+      </div>
+      <div class="form-check">
+        <input
+          class="form-check-input"
+          type="radio"
+          name="bookStatus"
+          id="bookStatus2"
+          [(ngModel)]="book.bookStatus"
+          [value]="true"
+        />
+        <label class="form-check-label" for="bookStatus2"> Hayır </label>
+      </div>
+      <br />
+      <div class="d-grid gap-2 d-md-block">
+        <button class="btn btn-success" type="button" (click)="save()">
+          Kaydet
+        </button>
+        <button class="btn btn-warning" type="button" (click)="clear()">
+          Temizle
+        </button>
+      </div>
+    </form>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Kitap İsmi</th>
+          <th>Yazar İsmi</th>
+          <th>Yayınevi</th>
+          <th>Basım Yılı</th>
+          <th>Kitap Durumu</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let book of books">
+          <td>{{ book.name | titlecase }}</td>
+          <td>{{ book.authorName | titlecase }}</td>
+          <td>{{ book.publisherName | titlecase }}</td>
+          <td>{{ book.dateOfIssue }}</td>
+          <td *ngIf="book.bookStatus == true">{{ bookTrue }}</td>
+          <td *ngIf="book.bookStatus == false">{{ bookFalse }}</td>
+          <td>
+            <div
+              class="btn-group"
+              role="group"
+              aria-label="Basic mixed styles example"
+            >
+              <button
+                type="button"
+                class="btn btn-danger"
+                (click)="deleteBook(book)"
+              >
+                Sil
+              </button>
+              <button
+                type="button"
+                class="btn btn-info"
+                (click)="getById(book.id)"
+              >
+                Güncelle
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

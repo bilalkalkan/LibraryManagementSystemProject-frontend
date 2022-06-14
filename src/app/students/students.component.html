@@ -1,0 +1,102 @@
+<div class="container">
+  <div class="row">
+    <form>
+      <div class="col-md-4">
+        <label for="firstName">Ad</label>
+        <input
+          type="text"
+          name="firstName"
+          id="firstName"
+          autocomplete="off"
+          class="form-control"
+          [(ngModel)]="student.firstName"
+        />
+      </div>
+      <div class="col-md-4">
+        <label for="lastName">Soyad</label>
+        <input
+          type="text"
+          name="lastName"
+          id="lastName"
+          autocomplete="off"
+          class="form-control"
+          [(ngModel)]="student.lastName"
+        />
+      </div>
+      <div class="col-md-4">
+        <label for="identificationNumber">Kimlik Numarası</label>
+        <input
+          type="text"
+          name="identificationNumber"
+          id="identificationNumber"
+          autocomplete="off"
+          class="form-control"
+          [(ngModel)]="student.identificationNumber"
+        />
+      </div>
+      <div class="col-md-4">
+        <label for="phoneNumber">Telefon Numarası</label>
+        <input
+          type="text"
+          name="phoneNumber"
+          id="phoneNumber"
+          autocomplete="off"
+          class="form-control"
+          [(ngModel)]="student.phoneNumber"
+        />
+      </div>
+
+      <br />
+      <div class="d-grid gap-2 d-md-block">
+        <button class="btn btn-success" type="button" (click)="save()">
+          Kaydet
+        </button>
+        <button class="btn btn-warning" type="button" (click)="clear()">
+          Temizle
+        </button>
+      </div>
+    </form>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Ad</th>
+          <th>Soyad</th>
+          <th>Kimlik Numarası</th>
+          <th>Telefon Numarası</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let student of students">
+          <td>{{ student.firstName }}</td>
+          <td>{{ student.lastName }}</td>
+          <td>{{ student.identificationNumber }}</td>
+          <td>{{ student.phoneNumber }}</td>
+
+          <td>
+            <div
+              class="btn-group"
+              role="group"
+              aria-label="Basic mixed styles example"
+            >
+              <button
+                type="button"
+                class="btn btn-danger"
+                (click)="delete(student)"
+              >
+                Sil
+              </button>
+              <button
+                type="button"
+                class="btn btn-info"
+                (click)="getStudent(student.id)"
+              >
+                Güncelle
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

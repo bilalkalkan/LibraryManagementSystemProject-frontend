@@ -1,0 +1,102 @@
+<div class="container">
+  <div class="row">
+    <form>
+      <div class="col-md-4">
+        <label for="studentId">Öğrenci</label>
+        <ng-select
+          bindLabel="name"
+          bindValue="id"
+          name="studentId"
+          [(ngModel)]="loan.studentId"
+          ><ng-option *ngFor="let student of students" [value]="student.id"
+            >{{ student.firstName }} {{ student.lastName }}</ng-option
+          >
+        </ng-select>
+      </div>
+      <div class="col-md-4">
+        <label for="bookId">Kitap</label>
+        <ng-select
+          bindLabel="name"
+          bindValue="id"
+          name="bookId"
+          [(ngModel)]="loan.bookId"
+          ><ng-option *ngFor="let book of books" [value]="book.id"
+            >{{ book.name }}
+          </ng-option>
+        </ng-select>
+      </div>
+      <div class="col-md-4">
+        <label for="loanDate">Ödünç Verme tarihi</label>
+        <input
+          type="text"
+          name="loanDate"
+          id="loanDate"
+          autocomplete="off"
+          class="form-control"
+          bsDatepicker
+          [(ngModel)]="loan.loanDate"
+        />
+      </div>
+      <div class="col-md-4">
+        <label for="returnDate">İade tarihi</label>
+        <input
+          type="text"
+          name="returnDate"
+          id="returnDate"
+          autocomplete="off"
+          class="form-control"
+          bsDatepicker
+          [(ngModel)]="loan.returnDate"
+        />
+      </div>
+
+      <button class="btn btn-success" (click)="save()">Kaydet</button>
+      <button class="btn btn-warning" (click)="clear()">Temizle</button>
+    </form>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Öğrenci İsmi</th>
+          <th>Kitap İsmi</th>
+          <th>Ödünç verme tarihi</th>
+          <th>İade tarihi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let loan of loans">
+          <td>
+            {{ loan.studentFirstName | titlecase }}
+            {{ loan.studentLastName | titlecase }}
+          </td>
+          <td>{{ loan.bookName }}</td>
+          <td>{{ loan.loanDate | date: "dd-MM-yyyy" }}</td>
+          <td>{{ loan.returnDate | date: "dd-MM-yyyy" }}</td>
+
+          <td>
+            <div
+              class="btn-group"
+              role="group"
+              aria-label="Basic mixed styles example"
+            >
+              <button
+                *ngIf="loan.returnDate != null"
+                type="button"
+                class="btn btn-danger"
+                (click)="delete(loan)"
+              >
+                Sil
+              </button>
+              <button
+                type="button"
+                class="btn btn-info"
+                (click)="getLoan(loan.id)"
+              >
+                Güncelle
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

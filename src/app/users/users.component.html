@@ -1,0 +1,47 @@
+<div class="container">
+  <div class="row">
+    <form>
+      <div class="col-md-4">
+        <label for="firstName">Adı</label>
+        <input
+          type="text"
+          #name="ngModel"
+          name="firstName"
+          id="firstName"
+          autocomplete="off"
+          class="form-control"
+          required
+          [(ngModel)]="user.firstName"
+        />
+      </div>
+      <div class="col-md-4">
+        <label for="lastName">Soyadı</label>
+        <input
+          type="text"
+          #name="ngModel"
+          name="lastName"
+          id="lastName"
+          autocomplete="off"
+          class="form-control"
+          required
+          [(ngModel)]="user.lastName"
+        />
+      </div>
+      <div class="col-md-4">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          #name="ngModel"
+          name="email"
+          id="email"
+          autocomplete="off"
+          class="form-control"
+          required
+          [(ngModel)]="user.email"
+        />
+      </div>
+
+      <button class="btn btn-success" (click)="updateUser()">Güncelle</button>
+    </form>
+  </div>
+</div>
