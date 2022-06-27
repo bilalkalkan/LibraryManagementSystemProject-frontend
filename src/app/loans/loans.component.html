@@ -1,17 +1,30 @@
 <div class="container">
   <div class="row">
-    <form>
+    <form [formGroup]="form">
       <div class="col-md-4">
         <label for="studentId">Öğrenci</label>
         <ng-select
           bindLabel="name"
-          bindValue="id"
+          bindValue="studentId"
           name="studentId"
-          [(ngModel)]="loan.studentId"
+          formControlName="studentId"
+          [ngClass]="{
+            'is-invalid': f['studentId'].invalid && f['studentId'].dirty,
+            'is-valid': f['studentId'].valid
+          }"
           ><ng-option *ngFor="let student of students" [value]="student.id"
-            >{{ student.firstName }} {{ student.lastName }}</ng-option
+            >{{ student.firstName | titlecase }}
+            {{ student.lastName | titlecase }}</ng-option
           >
         </ng-select>
+        <ng-container
+          [ngTemplateOutlet]="formAlertTemplate"
+          [ngTemplateOutletContext]="{
+            validation: 'required',
+            message: 'Bu alan boş bırakılamaz',
+            control: f['studentId']
+          }"
+        ></ng-container>
       </div>
       <div class="col-md-4">
         <label for="bookId">Kitap</label>
@@ -19,11 +32,23 @@
           bindLabel="name"
           bindValue="id"
           name="bookId"
-          [(ngModel)]="loan.bookId"
+          formControlName="bookId"
+          [ngClass]="{
+            'is-invalid': f['bookId'].invalid && f['bookId'].dirty,
+            'is-valid': f['bookId'].valid
+          }"
           ><ng-option *ngFor="let book of books" [value]="book.id"
-            >{{ book.name }}
+            >{{ book.name | titlecase }}
           </ng-option>
         </ng-select>
+        <ng-container
+          [ngTemplateOutlet]="formAlertTemplate"
+          [ngTemplateOutletContext]="{
+            validation: 'required',
+            message: 'Bu alan boş bırakılamaz',
+            control: f['bookId']
+          }"
+        ></ng-container>
       </div>
       <div class="col-md-4">
         <label for="loanDate">Ödünç Verme tarihi</label>
@@ -34,8 +59,20 @@
           autocomplete="off"
           class="form-control"
           bsDatepicker
-          [(ngModel)]="loan.loanDate"
+          formControlName="loanDate"
+          [ngClass]="{
+            'is-invalid': f['loanDate'].invalid && f['loanDate'].dirty,
+            'is-valid': f['loanDate'].valid
+          }"
         />
+        <ng-container
+          [ngTemplateOutlet]="formAlertTemplate"
+          [ngTemplateOutletContext]="{
+            validation: 'required',
+            message: 'Bu alan boş bırakılamaz',
+            control: f['loanDate']
+          }"
+        ></ng-container>
       </div>
       <div class="col-md-4">
         <label for="returnDate">İade tarihi</label>
@@ -46,8 +83,20 @@
           autocomplete="off"
           class="form-control"
           bsDatepicker
-          [(ngModel)]="loan.returnDate"
+          formControlName="returnDate"
+          [ngClass]="{
+            'is-invalid': f['returnDate'].invalid && f['returnDate'].dirty,
+            'is-valid': f['returnDate'].valid
+          }"
         />
+        <ng-container
+          [ngTemplateOutlet]="formAlertTemplate"
+          [ngTemplateOutletContext]="{
+            validation: 'required',
+            message: 'Bu alan boş bırakılamaz',
+            control: f['loanDate']
+          }"
+        ></ng-container>
       </div>
 
       <button class="btn btn-success" (click)="save()">Kaydet</button>
@@ -60,6 +109,7 @@
           <th>Kitap İsmi</th>
           <th>Ödünç verme tarihi</th>
           <th>İade tarihi</th>
+          <th>İşlemler</th>
         </tr>
       </thead>
       <tbody>
@@ -100,3 +150,16 @@
     </table>
   </div>
 </div>
+
+<ng-template
+  #formAlertTemplate
+  let-control="control"
+  let-message="message"
+  let-validation="validation"
+>
+  <ng-container
+    *ngIf="control.hasError(validation) && (control.dirty || control.touched)"
+  >
+    <div class="text-danger">{{ message }}</div>
+  </ng-container>
+</ng-template>

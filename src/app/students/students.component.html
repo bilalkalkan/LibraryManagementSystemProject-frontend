@@ -1,6 +1,6 @@
 <div class="container">
   <div class="row">
-    <form>
+    <form [formGroup]="form">
       <div class="col-md-4">
         <label for="firstName">Ad</label>
         <input
@@ -9,8 +9,37 @@
           id="firstName"
           autocomplete="off"
           class="form-control"
-          [(ngModel)]="student.firstName"
+          formControlName="firstName"
+          [ngClass]="{
+            'is-invalid': f['firstName'].invalid && f['firstName'].dirty,
+            'is-valid': f['firstName'].valid
+          }"
         />
+
+        <ng-container
+          [ngTemplateOutlet]="formAlertTemplate"
+          [ngTemplateOutletContext]="{
+            validation: 'required',
+            message: 'Bu alan boş bırakılamaz',
+            control: f['firstName']
+          }"
+        ></ng-container>
+        <ng-container
+          [ngTemplateOutlet]="formAlertTemplate"
+          [ngTemplateOutletContext]="{
+            validation: 'minlength',
+            message: 'En az üç karakter',
+            control: f['firstName']
+          }"
+        ></ng-container>
+        <ng-container
+          [ngTemplateOutlet]="formAlertTemplate"
+          [ngTemplateOutletContext]="{
+            validation: 'maxlength',
+            message: 'En fazla otuz karakter',
+            control: f['firstName']
+          }"
+        ></ng-container>
       </div>
       <div class="col-md-4">
         <label for="lastName">Soyad</label>
@@ -20,8 +49,36 @@
           id="lastName"
           autocomplete="off"
           class="form-control"
-          [(ngModel)]="student.lastName"
+          formControlName="lastName"
+          [ngClass]="{
+            'is-invalid': f['lastName'].invalid && f['lastName'].dirty,
+            'is-valid': f['lastName'].valid
+          }"
         />
+        <ng-container
+          [ngTemplateOutlet]="formAlertTemplate"
+          [ngTemplateOutletContext]="{
+            validation: 'required',
+            message: 'Bu alan boş bırakılamaz',
+            control: f['lastName']
+          }"
+        ></ng-container>
+        <ng-container
+          [ngTemplateOutlet]="formAlertTemplate"
+          [ngTemplateOutletContext]="{
+            validation: 'minlength',
+            message: 'En az üç karakter',
+            control: f['lastName']
+          }"
+        ></ng-container>
+        <ng-container
+          [ngTemplateOutlet]="formAlertTemplate"
+          [ngTemplateOutletContext]="{
+            validation: 'maxlength',
+            message: 'En fazla otuz karakter',
+            control: f['lastName']
+          }"
+        ></ng-container>
       </div>
       <div class="col-md-4">
         <label for="identificationNumber">Kimlik Numarası</label>
@@ -31,8 +88,38 @@
           id="identificationNumber"
           autocomplete="off"
           class="form-control"
-          [(ngModel)]="student.identificationNumber"
+          formControlName="identificationNumber"
+          [ngClass]="{
+            'is-invalid':
+              f['identificationNumber'].invalid &&
+              f['identificationNumber'].dirty,
+            'is-valid': f['identificationNumber'].valid
+          }"
         />
+        <ng-container
+          [ngTemplateOutlet]="formAlertTemplate"
+          [ngTemplateOutletContext]="{
+            validation: 'required',
+            message: 'Bu alan boş bırakılamaz',
+            control: f['identificationNumber']
+          }"
+        ></ng-container>
+        <ng-container
+          [ngTemplateOutlet]="formAlertTemplate"
+          [ngTemplateOutletContext]="{
+            validation: 'minlength',
+            message: 'En az on bir karakter',
+            control: f['identificationNumber']
+          }"
+        ></ng-container>
+        <ng-container
+          [ngTemplateOutlet]="formAlertTemplate"
+          [ngTemplateOutletContext]="{
+            validation: 'maxlength',
+            message: 'En fazla on bir karakter',
+            control: f['identificationNumber']
+          }"
+        ></ng-container>
       </div>
       <div class="col-md-4">
         <label for="phoneNumber">Telefon Numarası</label>
@@ -42,8 +129,36 @@
           id="phoneNumber"
           autocomplete="off"
           class="form-control"
-          [(ngModel)]="student.phoneNumber"
+          formControlName="phoneNumber"
+          [ngClass]="{
+            'is-invalid': f['phoneNumber'].invalid && f['phoneNumber'].dirty,
+            'is-valid': f['phoneNumber'].valid
+          }"
         />
+        <ng-container
+          [ngTemplateOutlet]="formAlertTemplate"
+          [ngTemplateOutletContext]="{
+            validation: 'required',
+            message: 'Bu alan boş bırakılamaz',
+            control: f['phoneNumber']
+          }"
+        ></ng-container>
+        <ng-container
+          [ngTemplateOutlet]="formAlertTemplate"
+          [ngTemplateOutletContext]="{
+            validation: 'minlength',
+            message: 'En az on bir karakter',
+            control: f['phoneNumber']
+          }"
+        ></ng-container>
+        <ng-container
+          [ngTemplateOutlet]="formAlertTemplate"
+          [ngTemplateOutletContext]="{
+            validation: 'maxlength',
+            message: 'En fazla on bir karakter',
+            control: f['phoneNumber']
+          }"
+        ></ng-container>
       </div>
 
       <br />
@@ -68,8 +183,8 @@
       </thead>
       <tbody>
         <tr *ngFor="let student of students">
-          <td>{{ student.firstName }}</td>
-          <td>{{ student.lastName }}</td>
+          <td>{{ student.firstName | titlecase }}</td>
+          <td>{{ student.lastName | titlecase }}</td>
           <td>{{ student.identificationNumber }}</td>
           <td>{{ student.phoneNumber }}</td>
 
@@ -100,3 +215,16 @@
     </table>
   </div>
 </div>
+
+<ng-template
+  #formAlertTemplate
+  let-control="control"
+  let-message="message"
+  let-validation="validation"
+>
+  <ng-container
+    *ngIf="control.hasError(validation) && (control.dirty || control.touched)"
+  >
+    <div class="text-danger">{{ message }}</div>
+  </ng-container>
+</ng-template>

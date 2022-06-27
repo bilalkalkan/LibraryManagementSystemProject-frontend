@@ -9,6 +9,12 @@ import { Loan } from './models/loanModel';
 import { LoanService } from './services/loan.service';
 import { defineLocale, trLocale } from 'ngx-bootstrap/chronos';
 import { BsLocaleService } from 'ngx-bootstrap/datepicker';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-loans',
@@ -16,6 +22,7 @@ import { BsLocaleService } from 'ngx-bootstrap/datepicker';
   styleUrls: ['./loans.component.css'],
 })
 export class LoansComponent implements OnInit {
+  form: FormGroup;
   loans: Loan[];
   loan: Loan = new Loan();
   students: Student[];
@@ -25,16 +32,20 @@ export class LoansComponent implements OnInit {
     private bookService: BookService,
     private studentService: StudentService,
     private toastrService: ToastrService,
-    private localService: BsLocaleService
+    private localService: BsLocaleService,
+    private formbuilder: FormBuilder
   ) {
     defineLocale('tr', trLocale);
     localService.use('tr');
   }
-
+  get f() {
+    return this.form.controls;
+  }
   ngOnInit(): void {
     this.getStudents();
     this.getLoans();
     this.getBooks();
+    this.initForm();
   }
 
   getStudents() {
@@ -60,45 +71,61 @@ export class LoansComponent implements OnInit {
     });
   }
   getLoan(id: number) {
-    debugger;
     this.loanService.getLoan(id).subscribe({
       next: (response) => {
         this.loan = response.data;
         this.loan.loanDate = new Date(this.loan.loanDate);
         this.loan.returnDate = new Date();
+        this.form.controls['studentId'].setValue(this.loan.studentId);
+        this.form.controls['bookId'].setValue(this.loan.bookId);
+        this.form.controls['loanDate'].setValue(this.loan.loanDate);
+        this.form.controls['returnDate'].setValue(this.loan.returnDate);
       },
     });
   }
+
+  initForm() {
+    this.form = this.formbuilder.group({
+      studentId: [this.loan?.studentId, Validators.required],
+      bookId: [this.loan?.bookId, Validators.required],
+      loanDate: [this.loan?.loanDate, Validators.required],
+      returnDate: [this.loan?.returnDate],
+    });
+  }
+
   save() {
-    debugger;
-    if (this.loan.id > 0) {
-      this.loanService.update(this.loan).subscribe({
-        next: (response) => {
-          this.toastrService.success(response.message);
-          this.loan = new Loan();
-          this.getLoans();
-        },
-        error: (errorResponse) => {
-          console.log(errorResponse.error);
-          this.toastrService.error(
-            errorResponse.error.Message || errorResponse.error.message
-          );
-        },
-      });
+    if (this.form.valid) {
+      let loanModel = Object.assign({ id: this.loan.id }, this.form.value);
+      if (this.loan.id > 0) {
+        this.loanService.update(loanModel).subscribe({
+          next: (response) => {
+            this.toastrService.success(response.message);
+            this.loan = new Loan();
+            this.getLoans();
+          },
+          error: (errorResponse) => {
+            console.log(errorResponse.error);
+            this.toastrService.error(
+              errorResponse.error.Message || errorResponse.error.message
+            );
+          },
+        });
+      } else {
+        this.loanService.add(loanModel).subscribe({
+          next: (response) => {
+            this.toastrService.success(response.message);
+            this.loan = new Loan();
+            this.getLoans();
+          },
+          error: (errorResponse) => {
+            console.log(errorResponse.error);
+            this.toastrService.error(
+              errorResponse.error.Message || errorResponse.error.message
+            );
+          },
+        });
+      }
     } else {
-      this.loanService.add(this.loan).subscribe({
-        next: (response) => {
-          this.toastrService.success(response.message);
-          this.loan = new Loan();
-          this.getLoans();
-        },
-        error: (errorResponse) => {
-          console.log(errorResponse.error);
-          this.toastrService.error(
-            errorResponse.error.Message || errorResponse.error.message
-          );
-        },
-      });
     }
   }
 
@@ -115,6 +142,7 @@ export class LoansComponent implements OnInit {
   }
 
   clear() {
-    this.loan = new Loan();
+    console.log(this.form.value);
+    this.form.reset();
   }
 }

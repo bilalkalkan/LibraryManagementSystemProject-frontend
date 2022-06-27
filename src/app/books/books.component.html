@@ -1,19 +1,45 @@
 <div class="container">
   <div class="row">
-    <form>
+    <form [formGroup]="form">
       <div class="col-md-4">
         <label for="name">Kitap İsmi</label>
         <input
           type="text"
-          #name="ngModel"
           name="name"
           id="name"
           autocomplete="off"
           class="form-control"
           required
-          minlength="4"
-          [(ngModel)]="book.name"
+          formControlName="name"
+          [ngClass]="{
+            'is-invalid': f['name'].invalid && f['name'].dirty,
+            'is-valid': f['name'].valid
+          }"
         />
+        <ng-container
+          [ngTemplateOutlet]="formAlertTemplate"
+          [ngTemplateOutletContext]="{
+            validation: 'required',
+            message: 'Bu alan boş bırakılamaz',
+            control: f['name']
+          }"
+        ></ng-container>
+        <ng-container
+          [ngTemplateOutlet]="formAlertTemplate"
+          [ngTemplateOutletContext]="{
+            validation: 'minlength',
+            message: 'En az üç karakter',
+            control: f['name']
+          }"
+        ></ng-container>
+        <ng-container
+          [ngTemplateOutlet]="formAlertTemplate"
+          [ngTemplateOutletContext]="{
+            validation: 'maxlength',
+            message: 'En fazla otuz karakter',
+            control: f['name']
+          }"
+        ></ng-container>
       </div>
       <div class="col-md-4">
         <label for="authorName">Yazar İsmi</label>
@@ -23,8 +49,37 @@
           id="authorName"
           autocomplete="off"
           class="form-control"
-          [(ngModel)]="book.authorName"
+          formControlName="authorName"
+          [ngClass]="{
+            'is-invalid': f['authorName'].invalid && f['authorName'].dirty,
+            'is-valid': f['authorName'].valid
+          }"
         />
+        <ng-container
+          [ngTemplateOutlet]="formAlertTemplate"
+          [ngTemplateOutletContext]="{
+            validation: 'required',
+            message: 'Bu alan boş bırakılamaz',
+            control: f['authorName']
+          }"
+        ></ng-container>
+
+        <ng-container
+          [ngTemplateOutlet]="formAlertTemplate"
+          [ngTemplateOutletContext]="{
+            validation: 'minlength',
+            message: 'En az üç karakter',
+            control: f['authorName']
+          }"
+        ></ng-container>
+        <ng-container
+          [ngTemplateOutlet]="formAlertTemplate"
+          [ngTemplateOutletContext]="{
+            validation: 'maxlength',
+            message: 'En fazla otuz karakter',
+            control: f['authorName']
+          }"
+        ></ng-container>
       </div>
       <div class="col-md-4">
         <label for="publisherName">Yayınevi</label>
@@ -34,8 +89,37 @@
           id="publisherName"
           autocomplete="off"
           class="form-control"
-          [(ngModel)]="book.publisherName"
+          formControlName="publisherName"
+          [ngClass]="{
+            'is-invalid':
+              f['publisherName'].invalid && f['publisherName'].dirty,
+            'is-valid': f['publisherName'].valid
+          }"
         />
+        <ng-container
+          [ngTemplateOutlet]="formAlertTemplate"
+          [ngTemplateOutletContext]="{
+            validation: 'required',
+            message: 'Bu alan boş bırakılamaz',
+            control: f['publisherName']
+          }"
+        ></ng-container>
+        <ng-container
+          [ngTemplateOutlet]="formAlertTemplate"
+          [ngTemplateOutletContext]="{
+            validation: 'minlength',
+            message: 'En az üç karakter',
+            control: f['publisherName']
+          }"
+        ></ng-container>
+        <ng-container
+          [ngTemplateOutlet]="formAlertTemplate"
+          [ngTemplateOutletContext]="{
+            validation: 'maxlength',
+            message: 'En fazla otuz karakter',
+            control: f['publisherName']
+          }"
+        ></ng-container>
       </div>
       <div class="col-md-4">
         <label for="dateOfIssue">Basım Yılı</label>
@@ -45,8 +129,36 @@
           id="dateOfIssue"
           autocomplete="off"
           class="form-control"
-          [(ngModel)]="book.dateOfIssue"
+          formControlName="dateOfIssue"
+          [ngClass]="{
+            'is-invalid': f['dateOfIssue'].invalid && f['dateOfIssue'].dirty,
+            'is-valid': f['dateOfIssue'].valid
+          }"
         />
+        <ng-container
+          [ngTemplateOutlet]="formAlertTemplate"
+          [ngTemplateOutletContext]="{
+            validation: 'required',
+            message: 'Bu alan boş bırakılamaz',
+            control: f['dateOfIssue']
+          }"
+        ></ng-container>
+        <ng-container
+          [ngTemplateOutlet]="formAlertTemplate"
+          [ngTemplateOutletContext]="{
+            validation: 'minlength',
+            message: 'En az 4 karakter',
+            control: f['dateOfIssue']
+          }"
+        ></ng-container>
+        <ng-container
+          [ngTemplateOutlet]="formAlertTemplate"
+          [ngTemplateOutletContext]="{
+            validation: 'maxlength',
+            message: 'En fazla 4 karakter',
+            control: f['dateOfIssue']
+          }"
+        ></ng-container>
       </div>
       <label for="bookStatus">Kitap Emanette mi?</label>
       <div class="form-check">
@@ -55,9 +167,21 @@
           type="radio"
           name="bookStatus"
           id="bookStatus1"
-          [(ngModel)]="book.bookStatus"
+          formControlName="bookStatus"
+          [ngClass]="{
+            'is-invalid': f['bookStatus'].invalid && f['bookStatus'].dirty,
+            'is-valid': f['bookStatus'].valid && f['bookStatus'].dirty
+          }"
           [value]="false"
         />
+        <ng-container
+          [ngTemplateOutlet]="formAlertTemplate"
+          [ngTemplateOutletContext]="{
+            validation: 'required',
+            message: 'Bu alan boş bırakılamaz',
+            control: f['bookStatus']
+          }"
+        ></ng-container>
         <label class="form-check-label" for="bookStatus1"> Evet </label>
       </div>
       <div class="form-check">
@@ -66,9 +190,21 @@
           type="radio"
           name="bookStatus"
           id="bookStatus2"
-          [(ngModel)]="book.bookStatus"
+          formControlName="bookStatus"
+          [ngClass]="{
+            'is-invalid': f['bookStatus'].invalid && f['bookStatus'].dirty,
+            'is-valid': f['bookStatus'].valid && f['bookStatus'].dirty
+          }"
           [value]="true"
         />
+        <ng-container
+          [ngTemplateOutlet]="formAlertTemplate"
+          [ngTemplateOutletContext]="{
+            validation: 'required',
+            message: 'Bu alan boş bırakılamaz',
+            control: f['bookStatus']
+          }"
+        ></ng-container>
         <label class="form-check-label" for="bookStatus2"> Hayır </label>
       </div>
       <br />
@@ -127,3 +263,16 @@
     </table>
   </div>
 </div>
+
+<ng-template
+  #formAlertTemplate
+  let-control="control"
+  let-message="message"
+  let-validation="validation"
+>
+  <ng-container
+    *ngIf="control.hasError(validation) && (control.dirty || control.touched)"
+  >
+    <div class="text-danger">{{ message }}</div>
+  </ng-container>
+</ng-template>

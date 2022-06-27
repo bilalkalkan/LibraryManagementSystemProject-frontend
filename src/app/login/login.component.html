@@ -6,7 +6,7 @@
           <div class="card-body p-md-5">
             <div class="row justify-content-center">
               <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
-                <form>
+                <form [formGroup]="form">
                   <div class="form-floating">
                     <input
                       type="email"
@@ -14,9 +14,22 @@
                       id="email"
                       name="email"
                       autocomplete="off"
-                      [(ngModel)]="user.email"
+                      formControlName="email"
+                      [ngClass]="{
+                        'is-invalid': f['email'].invalid && f['email'].dirty,
+                        'is-valid': f['email'].valid
+                      }"
                     />
+
                     <label for="floatingInput">E-posta</label>
+                    <ng-container
+                      [ngTemplateOutlet]="formAlertTemplate"
+                      [ngTemplateOutletContext]="{
+                        validation: 'required',
+                        message: 'Bu alan boş bırakılamaz',
+                        control: f['email']
+                      }"
+                    ></ng-container>
                   </div>
                   <div class="form-floating">
                     <input
@@ -25,9 +38,23 @@
                       id="password"
                       name="password"
                       autocomplete="off"
-                      [(ngModel)]="user.password"
+                      formControlName="password"
+                      [ngClass]="{
+                        'is-invalid':
+                          f['password'].invalid && f['password'].dirty,
+                        'is-valid': f['password'].valid
+                      }"
                     />
                     <label for="floatingInput">Parola</label>
+
+                    <ng-container
+                      [ngTemplateOutlet]="formAlertTemplate"
+                      [ngTemplateOutletContext]="{
+                        validation: 'required',
+                        message: 'Bu alan boş bırakılamaz',
+                        control: f['password']
+                      }"
+                    ></ng-container>
                   </div>
                   <br />
                   <button
@@ -46,3 +73,16 @@
     </div>
   </div>
 </section>
+
+<ng-template
+  #formAlertTemplate
+  let-control="control"
+  let-message="message"
+  let-validation="validation"
+>
+  <ng-container
+    *ngIf="control.hasError(validation) && (control.dirty || control.touched)"
+  >
+    <div class="text-danger">{{ message }}</div>
+  </ng-container>
+</ng-template>
